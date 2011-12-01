@@ -1,0 +1,23 @@
+<html>
+<head>
+<title>Index of {{ metadata["path"] }}</title>
+</head>
+<body>
+Directory listing:<br>
+{% if metadata["contents"] %}
+  <ul>
+  {% for file in metadata["contents"] %}
+  <li>{{ file["path"] }} (<a href="/delete?path={{file['path']}}">delete</a>)</li>
+  {% end %}
+  </ul>
+{% else %}
+  This folder is empty.
+{% end if %}
+<br><br>
+Create a file:<br>
+<form method="POST" action="/create">
+Name: <input type="text" name="filename"><br>
+<input type="submit">
+</form>
+</body>
+</html>

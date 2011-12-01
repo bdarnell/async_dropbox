@@ -1,0 +1,5 @@
+# Copy this file to config.flags and fill in the blanks.
+# See README for details
+
+dropbox_consumer_key = ""
+dropbox_consumer_secret = ""

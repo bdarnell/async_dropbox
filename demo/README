@@ -1,0 +1,7 @@
+This is a very simple app that demonstrates basic usage of the dropbox API.
+
+To run the app, you'll need to register with Dropbox to get an API key:
+https://www.dropbox.com/developers/apps
+
+Copy the file config.flags.sample to config.flags and fill in the blanks
+with the "App key" and "App secret" values from your registered application.

@@ -1,9 +1,6 @@
 import tornado.auth
-import functools
 import urllib
 from tornado.httpclient import AsyncHTTPClient
-import json
-import logging
 
 class DropboxMixin(tornado.auth.OAuthMixin):
     """Dropbox OAuth authentication.
@@ -33,6 +30,35 @@ class DropboxMixin(tornado.auth.OAuthMixin):
 
     def dropbox_request(self, subdomain, path, callback, access_token,
                         post_args=None, put_body=None, **args):
+        """Fetches the given API operation.
+
+        The request is defined by a combination of subdomain (either
+        "api" or "api-content") and path (such as "/1/metadata/sandbox/").
+        See the Dropbox REST API docs for details:
+        https://www.dropbox.com/developers/reference/api
+
+        For GET requests, arguments should be passed as keyword arguments
+        to dropbox_request.  For POSTs, arguments should be passed
+        as a dictionary in `post_args`.  For PUT, data should be passed
+        as `put_body`
+
+        Example usage::
+        
+            class MainHandler(tornado.web.RequestHandler,
+                              async_dropbox.DropboxMixin):
+                @tornado.web.authenticated
+                @tornado.web.asynchronous
+                def get(self):
+                    self.dropbox_request(
+                        "api", "/1/metadata/sandbox/"
+                        access_token=self.current_user["access_token"],
+                        callback=self._on_metadata)
+
+                def _on_metadata(self, response):
+                    response.rethrow()
+                    metadata = json.loads(response.body)
+                    self.render("main.html", metadata=metadata)
+        """
         url = "https://%s.dropbox.com%s" % (subdomain, path)
         if access_token:
             all_args = {}
