@@ -1,0 +1,24 @@
+Introduction
+============
+
+This is an asynchronous python interface to the Dropbox API, using the
+Tornado IOLoop.  It is designed to be similar to the existing interfaces
+in the `tornado.auth` module.
+
+Example usage
+=============
+        
+    class MainHandler(tornado.web.RequestHandler,
+                      async_dropbox.DropboxMixin):
+        @tornado.web.authenticated
+        @tornado.web.asynchronous
+        def get(self):
+            self.dropbox_request(
+                "api", "/1/metadata/sandbox/"
+                access_token=self.current_user["access_token"],
+                callback=self._on_metadata)
+
+        def _on_metadata(self, response):
+            response.rethrow()
+            metadata = json.loads(response.body)
+            self.render("main.html", metadata=metadata)
