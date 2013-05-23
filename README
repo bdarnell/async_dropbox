@@ -14,7 +14,7 @@ Example usage
         @tornado.web.asynchronous
         def get(self):
             self.dropbox_request(
-                "api", "/1/metadata/sandbox/"
+                "api", "/1/metadata/sandbox/",
                 access_token=self.current_user["access_token"],
                 callback=self._on_metadata)
 
